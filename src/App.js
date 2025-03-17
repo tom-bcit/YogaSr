@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import PoseDetection from "./MyPoseDetection"; // Your tracking component
 import PoseDetectionFromImage from "./PoseDetectionFromImage";
-import chairPoseImg from "./poses/chair_pose.jpeg"; // Example reference image
+import tree_pose from "./poses/tree_pose.jpeg"; // Example reference image
+import warrior_pose from "./poses/warrior_pose.png"; // Example reference image
 import "./App.css";
 
 const yogaPoses = [
-  { name: "Tree Pose", value: "tree_pose", image: chairPoseImg },
-  { name: "Warrior Pose", value: "warrior_pose", image: "warrior_pose.png" }
+  { name: "Tree Pose", value: "tree_pose", image: tree_pose},
+  { name: "Warrior Pose", value: "warrior_pose", image: warrior_pose }
 ];
 
 const App = () => {
@@ -36,7 +37,7 @@ const App = () => {
 
       {/* Live Camera Pose Detection */}
       <div className="pose-section">
-        {/* <PoseDetection selectedPose={selectedPose.value} className="pose-detection" /> */}
+        <PoseDetection selectedPose={selectedPose.value} />
       </div>
     </div>
 

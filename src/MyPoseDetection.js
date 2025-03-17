@@ -135,18 +135,8 @@ const PoseDetection = ({ selectedPose }) => {
 
   return (
     <div class="pose-detection-vid">
-      <video
-        ref={videoRef}
-        style={{
-          position: "absolute"
-        }}
-      />
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: "absolute"
-        }}
-      />
+      <video ref={videoRef} className="pose-image"/>
+      <canvas ref={canvasRef} className="skeleton-canvas" />
     </div>
   );
 };
