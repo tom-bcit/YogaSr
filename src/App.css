@@ -12,14 +12,11 @@
   position: static; 
 }
 
-.pose-detection {
-  height: 500px; 
-}
-
-.pose-detection-img {
+.pose-detection-img,
+.pose-detection-vid {
   position: relative;
-  width: 500px; /* Match the image and canvas size */
-  height: 500px;
+  height: 40vh;
+  flex: 1;
 }
 
 .pose-image {
@@ -34,12 +31,40 @@
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Prevents interaction */
+  pointer-events: none;
 }
-.pose-detection-vid {
-  position: relative;
-  height: 500px;
-}
+
 .mirror {
   transform: scaleX(-1);
+}
+
+.pose-container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .pose-container {
+    flex-direction: row;
+  }
+}
+
+.pose-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.pose-button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.pose-button.active {
+  background-color: #007bff;
+  color: white;
 }

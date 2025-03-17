@@ -9,7 +9,7 @@ const yogaPoses = {
   // Add more poses as necessary
 };
 
-const PoseDetection = ({ selectedPose }) => {
+const PoseDetection = ({}) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [detectedPose, setDetectedPose] = useState(null);
@@ -20,17 +20,17 @@ const PoseDetection = ({ selectedPose }) => {
       const detector = await poseDetection.createDetector(
         poseDetection.SupportedModels.MoveNet
       );
-  
+
       const video = videoRef.current;
       const canvas = canvasRef.current;
       if (!video || !canvas) {
         console.error("Video or canvas element not found!");
         return;
       }
-  
+
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       video.srcObject = stream;
-  
+
       // Ensure video is loaded before setting canvas size
       await new Promise((resolve) => {
         video.onloadedmetadata = () => {
@@ -42,13 +42,13 @@ const PoseDetection = ({ selectedPose }) => {
           });
         };
       });
-  
+
       const detectPose = async () => {
         if (!video || video.readyState < 2) {
           requestAnimationFrame(detectPose);
           return;
         }
-  
+
         try {
           const poses = await detector.estimatePoses(video);
           setDetectedPose(poses[0]);  // Assume only one person is detected
@@ -56,25 +56,25 @@ const PoseDetection = ({ selectedPose }) => {
         } catch (error) {
           console.error("Pose detection error:", error);
         }
-  
+
         requestAnimationFrame(detectPose);
       };
-  
+
       detectPose();
     };
-  
+
     setupCamera();
-  }, [selectedPose]);
-  
+  }, []);
+
   const drawKeypoints = (poses) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-  
+
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous frame
-  
+
     poses.forEach((pose) => {
       const keypoints = pose.keypoints;
-  
+
       // Draw keypoints (dots)
       keypoints.forEach((keypoint) => {
         if (keypoint.score > 0.3) { // Confidence threshold
@@ -84,7 +84,7 @@ const PoseDetection = ({ selectedPose }) => {
           ctx.fill();
         }
       });
-  
+
       const keypointConnections = [
         ["nose", "left_eye"], ["nose", "right_eye"],
         ["left_eye", "left_ear"], ["right_eye", "right_ear"],
@@ -101,7 +101,7 @@ const PoseDetection = ({ selectedPose }) => {
       keypointConnections.forEach(([p1, p2]) => {
         const point1 = keypoints.find(k => k.name === p1);
         const point2 = keypoints.find(k => k.name === p2);
-  
+
         if (point1 && point2 && point1.score > 0.3 && point2.score > 0.3) {
           ctx.beginPath();
           ctx.moveTo(point1.x, point1.y);
@@ -112,30 +112,11 @@ const PoseDetection = ({ selectedPose }) => {
         }
       });
     });
-    
-    if (detectedPose && selectedPose) {
-      comparePoses(detectedPose, selectedPose); // Compare the pose to the selected pose
-    }
-  };
-
-  // Compare the detected pose with the selected pose
-  const comparePoses = (detectedPose, selectedPose) => {
-    if (!yogaPoses[selectedPose]) return;
-
-    const targetPose = yogaPoses[selectedPose];
-    const detectedKeypoints = detectedPose.keypoints;
-
-    targetPose.keypoints.forEach((keypointName) => {
-      const detectedPoint = detectedKeypoints.find(k => k.name === keypointName);
-      if (detectedPoint && detectedPoint.score > 0.5) {
-        console.log(`${keypointName} detected in position`);
-      }
-    });
   };
 
   return (
     <div class="pose-detection-vid">
-      <video ref={videoRef} className="pose-image"/>
+      <video ref={videoRef} className="pose-image" />
       <canvas ref={canvasRef} className="skeleton-canvas" />
     </div>
   );
