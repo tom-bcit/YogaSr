@@ -40,7 +40,7 @@ const App = () => {
       </div>
 
       {/* Live Camera Pose Detection */}
-      <div className="pose-section">
+      <div className="pose-section mirror">
         <PoseDetection selectedPose={selectedPose.value} />
       </div>
     </div>
